@@ -1,0 +1,7 @@
+export const OK_MESSAGE = "Success"
+export const CREATED_MESSAGE = "Successfully Created"
+export const UPDATE_MESSAGE = "Successfully Updated"
+export const NOTFOUND_MESSAGE = "Not Found"
+export const BADREQUEST_MESSAGE = "Bad Request"
+export const INTERNAL_SERVER_ERROR_MESSAGE = "Internal Server Error"
+export const BADREQUEST_EXIST_MESSAGE = "Already Exist"
