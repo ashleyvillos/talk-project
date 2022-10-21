@@ -11,10 +11,10 @@ ProductRouter.get('/products', async (req: Request, res: Response) => {
             let response = await ProductController.getAllProducts(req.query)
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 
@@ -25,10 +25,10 @@ ProductRouter.get('/product/:id', async (req: Request, res: Response) => {
             let response = await ProductController.getProductInfo(parseInt(req.params.id))
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 
@@ -39,10 +39,10 @@ ProductRouter.post('/product', async (req: Request, res: Response) => {
             let response = await ProductController.createProduct(req.body)
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 
@@ -53,10 +53,10 @@ ProductRouter.put('/product', async (req: Request, res: Response) => {
             let response = await ProductController.updateProduct(req.body)
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 
@@ -67,10 +67,10 @@ ProductRouter.delete('/product/:id', async (req: Request, res: Response) => {
             let response = await ProductController.deleteProduct(parseInt(req.params.id))
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 

@@ -3,56 +3,27 @@ import { useColorMode, Switch, Flex, Button, IconButton, Box, Text, List, ListIt
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import NextLink from 'next/link'
 import { NAVIGATION_ROUTES } from '../../_nav'
-
-// const Sidebar = () => {
-//     interface Page {
-//     name: string;
-//     url: string;
-
-//     }
-
-//     const PAGES: Page[] = [
-//         { name: "Home", url: "/" },
-//         { name: "Users", url: "/users" },
-//         { name: "Auth", url: "/auth" },
-//         { name: "User List using toolkit", url: "/user-list" },
-//         { name: "User List using rtk", url: "/user-list-rtk" },
-//       ];
-
-//     return (
-//         <Box
-//           w={"20vw"}
-//           h={"full"}
-//           bg={"indigo"}
-//           color={"white"}
-//           p={4}
-//           position={"fixed"}
-//           top={0}
-//         >
-//           <Text color={"orange"} fontSize={"3xl"} fontWeight={"extrabold"}>
-//             NAVIGATION
-//           </Text>
-//           <List fontSize={"xl"}>
-//             {PAGES.map((page) => (
-//               <ListItem key={page.name} fontWeight={"semibold"}>
-//                 <Link href={page.url}>{page.name}</Link>
-//               </ListItem>
-//             ))}
-//           </List>
-//         </Box>
-//     )
-// }
+import { setCookie } from 'cookies-next'
+import Image from 'next/image'
+import Logo from '../../public/icons/logo.png'
+import { useRouter } from 'next/router'
 
 const Navbar = () => {
+    const router = useRouter()
     const [display, changeDisplay] = useState('none')
+    const [isToggled, setIsToggled] = useState(true )
 
     return (
-        <Flex height="4em" borderBottom="1px solid #eaeced">
+        <Flex height="4em" py={8} borderBottom="1px solid #eaeced" justifyContent="space-between">
             <Flex alignItems="center" px={10} display={['none', 'none', 'flex', 'flex']}>
-                <Box mr={3}>
-                    <NextLink href="/" passHref>
-                        Logo Here
-                    </NextLink>
+                <Box mr={3} _hover={{cursor: 'pointer'}} onClick={() => router.push('/shops')}>
+                    <Image
+                        src={Logo}
+                        alt="Picture of the author"
+                        priority={true}
+                        width="70px"
+                        height="40px"
+                    />
                 </Box>
 
                 {NAVIGATION_ROUTES.map((nav, index) => (
@@ -78,6 +49,7 @@ const Navbar = () => {
                 icon={<HamburgerIcon />}
                 display={['flex', 'flex', 'none', 'none']}
                 onClick={() => changeDisplay('flex')}
+                height="full"
             />
 
             <Flex
@@ -116,6 +88,24 @@ const Navbar = () => {
                         </NextLink>
                     ))}
                 </Flex>
+            </Flex>
+
+            <Flex justifyContent="center" alignItems="center" pr={5}>
+                {/* <Text mr={5}> {(isToggled) ? '(Seller Mode)' : '(Buyer Mode)'} </Text> */}
+                {/* <Switch 
+                    isChecked={isToggled}  
+                    onChange={() => setIsToggled((prevState: boolean) => !prevState)} 
+                    mr={4}
+                /> */}
+                <NextLink href={'/logout'} passHref>
+                    <Button
+                        as="a"
+                        variant="link"
+                        aria-label="logout"
+                    >
+                        Logout
+                    </Button>
+                </NextLink>
             </Flex>
         </Flex>
     )

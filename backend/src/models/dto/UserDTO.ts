@@ -1,7 +1,7 @@
 export class SignupDTO {
     username?: string
     password?: string
-    confirm_password?: string
+    confirmPassword?: string
 }
 
 export class LoginDTO {

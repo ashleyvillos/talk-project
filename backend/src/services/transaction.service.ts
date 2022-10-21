@@ -51,9 +51,6 @@ class TransactionService extends CommonResponse {
                 if (!txValidation.valid) {
                     return this.RESPONSE(BADREQUEST, {}, 0, txValidation.message)    
                 }
-
-                // get cart products
-                let cartProducts = CartProduct.findAll({ where: { cart_id: dto.cart_id } })
               
                 let response = await Transaction.create({...dto})
                 if (response) {
@@ -70,88 +67,88 @@ class TransactionService extends CommonResponse {
         }
     }
 
-    // async getAllCarts(offset: number, limit: number, sort: string, order: string, filter: CartFilter) {
-    //     try {
-    //         let querySettings: FindOptions<any> = {
-    //             offset: offset,
-    //             limit: limit,
-    //             order: [[sort, order]],
-    //         }
+    async getAllTransactions(offset: number, limit: number, sort: string, order: string, filter: TxFilter) {
+        try {
+            let querySettings: FindOptions<any> = {
+                offset: offset,
+                limit: limit,
+                order: [[sort, order]],
+            }
             
-    //         let hasFilter = false
-    //         let where: WhereOptions<any> = {}
-    //         for (let [key, value] of Object.entries(filter)) {
-    //             hasFilter=  true
-    //             if (key === 'is_active') {
-    //                 where[key] = (value === 'true')
-    //             } else {
-    //                 where[key] = parseInt(value)
-    //             }
-    //         }
+            let hasFilter = false
+            let where: WhereOptions<any> = {}
+            for (let [key, value] of Object.entries(filter)) {
+                hasFilter=  true
+                if (key === 'is_active') {
+                    where[key] = (value === 'true')
+                } else {
+                    where[key] = parseInt(value)
+                }
+            }
 
-    //         if (hasFilter) {
-    //             querySettings['where'] = where
-    //         }
+            if (hasFilter) {
+                querySettings['where'] = where
+            }
 
-    //         let cart = await Cart.findAll(querySettings)
-    //         if (cart) {
-    //             return this.RESPONSE(OK, cart, 0, OK_MESSAGE)
-    //         } else {
-    //             return this.RESPONSE(NOTFOUND, [], 0, NOTFOUND_MESSAGE)
-    //         }
-    //     } catch(err) {
-    //         return this.RESPONSE(INTERNAL_SERVER_ERROR, err, 0, INTERNAL_SERVER_ERROR_MESSAGE)
-    //     }
-    // }
+            let tx = await Transaction.findAll(querySettings)
+            if (tx !== null) {
+                return this.RESPONSE(OK, tx, 0, OK_MESSAGE)
+            } else {
+                return this.RESPONSE(NOTFOUND, [], 0, NOTFOUND_MESSAGE)
+            }
+        } catch(err) {
+            return this.RESPONSE(INTERNAL_SERVER_ERROR, err, 0, INTERNAL_SERVER_ERROR_MESSAGE)
+        }
+    }
 
-    // async getCartInfo(id: number) {
-    //     try {
-    //         let cart = await Cart.findOne({where: { id: id }})
-    //         if (cart !== null) {
-    //             return this.RESPONSE(OK, cart, 0, OK_MESSAGE)
-    //         } else {
-    //             return this.RESPONSE(NOTFOUND, {}, 0, NOTFOUND_MESSAGE)
-    //         }
-    //     } catch(err) {
-    //         return this.RESPONSE(INTERNAL_SERVER_ERROR, err, 0, INTERNAL_SERVER_ERROR_MESSAGE)
-    //     }
-    // }
+    async getTransactionInfo(id: number) {
+        try {
+            let tx = await Transaction.findOne({where: { id: id }})
+            if (tx !== null) {
+                return this.RESPONSE(OK, tx, 0, OK_MESSAGE)
+            } else {
+                return this.RESPONSE(NOTFOUND, {}, 0, NOTFOUND_MESSAGE)
+            }
+        } catch(err) {
+            return this.RESPONSE(INTERNAL_SERVER_ERROR, err, 0, INTERNAL_SERVER_ERROR_MESSAGE)
+        }
+    }
 
-    // async updateCart(dto: UpdateCartDTO) {
-    //     try {
-    //         let cart = await Cart.findOne({ where: { id: dto.id } })
-    //         if (cart !== null) {
-    //             let updateData = await Cart.update(dto, { where: { id: dto.id } })
-    //             if (updateData) {
-    //                 return this.RESPONSE(UPDATE, updateData, 0, UPDATE_MESSAGE)    
-    //             } else {
-    //                 return this.RESPONSE(BADREQUEST, {}, 0, BADREQUEST_MESSAGE)    
-    //             }
-    //         } else {
-    //             return this.RESPONSE(NOTFOUND, {}, 0, NOTFOUND_MESSAGE)
-    //         }
-    //     } catch(err) {
-    //         return this.RESPONSE(INTERNAL_SERVER_ERROR, err, 0, INTERNAL_SERVER_ERROR_MESSAGE)
-    //     }
-    // }
+    async updateTransaction(dto: UpdateTxDTO) {
+        try {
+            let tx = await Transaction.findOne({ where: { id: dto.id } })
+            if (tx !== null) {
+                let updateData = await Transaction.update(dto, { where: { id: dto.id } })
+                if (updateData) {
+                    return this.RESPONSE(UPDATE, updateData, 0, UPDATE_MESSAGE)    
+                } else {
+                    return this.RESPONSE(BADREQUEST, {}, 0, BADREQUEST_MESSAGE)    
+                }
+            } else {
+                return this.RESPONSE(NOTFOUND, {}, 0, NOTFOUND_MESSAGE)
+            }
+        } catch(err) {
+            return this.RESPONSE(INTERNAL_SERVER_ERROR, err, 0, INTERNAL_SERVER_ERROR_MESSAGE)
+        }
+    }
 
-    // async deleteCart(id: number) {
-    //     try {
-    //         let cart = await Cart.findOne({ where: { id: id } })
-    //         if (cart !== null) {
-    //             let updateData = await Cart.update({ 'is_active': false }, { where: { id: id } })
-    //             if (updateData) {
-    //                 return this.RESPONSE(UPDATE, updateData, 0, UPDATE_MESSAGE)    
-    //             } else {
-    //                 return this.RESPONSE(BADREQUEST, {}, 0, BADREQUEST_MESSAGE)    
-    //             }
-    //         } else {
-    //             return this.RESPONSE(NOTFOUND, {}, 0, NOTFOUND_MESSAGE)
-    //         }
-    //     } catch(err) {
-    //         return this.RESPONSE(INTERNAL_SERVER_ERROR, err, 0, INTERNAL_SERVER_ERROR_MESSAGE)
-    //     }
-    // }
+    async deleteTransaction(id: number) {
+        try {
+            let tx = await Transaction.findOne({ where: { id: id } })
+            if (tx !== null) {
+                let updateData = await Transaction.update({ 'is_active': false }, { where: { id: id } })
+                if (updateData) {
+                    return this.RESPONSE(UPDATE, updateData, 0, UPDATE_MESSAGE)    
+                } else {
+                    return this.RESPONSE(BADREQUEST, {}, 0, BADREQUEST_MESSAGE)    
+                }
+            } else {
+                return this.RESPONSE(NOTFOUND, {}, 0, NOTFOUND_MESSAGE)
+            }
+        } catch(err) {
+            return this.RESPONSE(INTERNAL_SERVER_ERROR, err, 0, INTERNAL_SERVER_ERROR_MESSAGE)
+        }
+    }
 }
 
 export default new TransactionService

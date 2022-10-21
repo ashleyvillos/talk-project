@@ -1,8 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Home: NextPage = () => {
-  return <Box w={"full"}>FE BOOTCAMP</Box>;
+  const router = useRouter()
+  useEffect(() => {
+    router.push('/shops')
+}, [])
+  return null;
 };
 
 export default Home;

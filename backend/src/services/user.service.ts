@@ -49,7 +49,7 @@ class UserService extends CommonResponse {
                     return this.RESPONSE(BADREQUEST, {}, 0, BADREQUEST_EXIST_MESSAGE)
                 }
 
-                if (dto.password === dto.confirm_password) {
+                if (dto.password === dto.confirmPassword) {
                     let hashPassword = await bcrypt.hash(dto.password as string, 10)
                     let response = await User.create({
                         username: dto.username,

@@ -7,7 +7,6 @@ import {
     InputLeftElement,
     Button,
     Divider,
-    HStack,
     Text
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
@@ -15,25 +14,46 @@ import Image from 'next/image'
 import Logo from '../../public/icons/logo.png'
 import { LockIcon } from '@chakra-ui/icons'
 import { FaUser } from 'react-icons/fa'
-import { useEffect, useState, memo } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-
+import { useRouter } from "next/router";
+import { useLogin } from "../../hooks/useLogin";
+import swal from "prettyalert";
+import { setCookie } from 'cookies-next';
 
 const Login: NextPage = () => {
+    const router = useRouter()
     interface FormInput {
         username: string;
         password: string;
     }
     const { register, handleSubmit, formState: { errors } } = useForm<FormInput>();
-    const onLogin: SubmitHandler<FormInput> = (data) => {
-        console.log('login')
-        console.log(data)
-    }
-
-    const onSignup: SubmitHandler<FormInput> = (data) => {
-        console.log('signup')
-        console.log(data)
-    }
+    const onError = (data: any) => {
+		swal({
+			title: 'Oops!',
+			text: 'There was an error',
+			icon: 'error'
+		})
+	}
+	const onSuccess = (data: any) => {
+		if (data.data.status == 200) {
+            setCookie('accessToken', data.data.response.accessToken)
+			swal({
+				text: 'Login Successful',
+				icon: 'success'
+			}).then(() => {
+				router.push('/')
+			})
+		} else {
+			swal({
+				title: 'Oops!',
+				text: data.message,
+				icon: 'error'
+			})
+		}
+	}
+    const { mutate } = useLogin(onSuccess, onError)
+    const onLogin: SubmitHandler<FormInput> = (formInput) => { mutate(formInput) }
 
     const [colors, setColors] = useState({
         username: '#cbd5e0',
@@ -43,12 +63,9 @@ const Login: NextPage = () => {
     const inputRules = {
         username: {
             required: true,
-            maxLength: 20,
         },
         password: {
             required: true,
-            pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/gi,
-            minLength: 8,
         }
     }
 
@@ -56,16 +73,10 @@ const Login: NextPage = () => {
         if (field === 'username') {
             if (errorType === 'required') {
                 return <Text color="red.300"> Username is required </Text>
-            } else if (errorType === 'maxLength') {
-                return <Text color="red.300"> Username should have {inputRules.username.maxLength} or less characters </Text>
-            }
+            } 
         } else if (field === 'password') {
             if (errorType === 'required') {
                 return <Text color="red.300"> Password is required </Text>
-            } else if (errorType === 'minLength') {
-                return <Text color="red.300"> Password should have {inputRules.password.minLength} or more characters </Text>
-            } else if (errorType === 'pattern') {
-                return <Text color="red.300"> Password should contain at least one letter and one number </Text>
             }
         }
 
@@ -159,9 +170,9 @@ const Login: NextPage = () => {
                         color="#0aa1e2"
                         _hover={{bg: "white", border: "2px solid #0aa1e2"}}
                         borderRadius="2em"
-                        onClick={handleSubmit((data) => {
-                            onSignup(data)
-                        })}
+                        onClick={() => {
+                            router.push('/signup')
+                        }}
                     >
                         Sign Up
                     </Button>

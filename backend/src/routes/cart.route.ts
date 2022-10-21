@@ -11,10 +11,10 @@ CartRouter.post('/cart', async (req: Request, res: Response) => {
             let response = await CartController.createCart(req.body)
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 
@@ -25,10 +25,10 @@ CartRouter.get('/carts', async (req: Request, res: Response) => {
             let response = await CartController.getAllCarts(req.query)
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 
@@ -39,10 +39,10 @@ CartRouter.get('/cart/:id', async (req: Request, res: Response) => {
             let response = await CartController.getCartInfo(parseInt(req.params.id))
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 
@@ -53,10 +53,10 @@ CartRouter.put('/cart', async (req: Request, res: Response) => {
             let response = await CartController.updateCart(req.body)
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 
@@ -67,10 +67,10 @@ CartRouter.delete('/cart/:id', async (req: Request, res: Response) => {
             let response = await CartController.deleteCart(parseInt(req.params.id))
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 
@@ -81,10 +81,10 @@ CartRouter.post('/cart/checkout', async (req: Request, res: Response) => {
             let response = await CartController.checkoutCart(parseInt(req.body.id))
             res.status(response.status).send(response)
         } else {
-            res.status(authenticate.status).send(authenticate)
+            res.status(401).send(authenticate)
         }
     } else {
-        res.status(200).send({ message: "Authorization Error" })
+        res.status(401).send({ message: "Authorization Error" })
     }
 })
 

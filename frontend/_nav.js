@@ -1,5 +1,7 @@
 export const NAVIGATION_ROUTES = [
-    { route: '/', name: 'Shops' },
-    { route: '/', name: 'Products' }
+    { route: '/shops', name: 'Shops' },
+    { route: '/products', name: 'Products' },
+    // { route: '/cart', name: 'Cart' },
+    // { route: '/transactions', name: 'Transactions' },
 ]
 

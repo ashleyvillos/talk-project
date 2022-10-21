@@ -1,26 +1,23 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools'
 import { Layout } from "../components/Layout";
-import { wrapper } from "../store/store";
 import Login from "./login";
 import Signup from "./signup";
 
+
+const queryClient = new QueryClient()
+
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
-  // console.log(Component)
-  // console.log(pageProps)
-  
   const Content = () => {
     let pathname = appProps.router.pathname
     if (pathname === '/signup') {
       return <Signup />
-    } 
-    
-    else if (pathname === '/login') {
+    }  else if (pathname === '/login') {
       return <Login />
-    } 
-    
-    else {
+    } else {
       return (
         <Layout>
           <Component {...pageProps} />
@@ -31,9 +28,12 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
 
   return (
     <ChakraProvider>
-      <Content />
+      <QueryClientProvider client={queryClient}>
+        <Content />
+        {/* <ReactQueryDevtools initialIsOpen={false} position="bottom-right" /> */}
+      </QueryClientProvider>
     </ChakraProvider>
   );
 }
 
-export default wrapper.withRedux(MyApp);
+export default MyApp
